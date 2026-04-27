@@ -8,7 +8,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
       --cyan:  #00f5d4;
       --pink:  #ff2d6b;
@@ -20,10 +19,7 @@
       --muted: #2a3040;
       --dim:   #141520;
     }
-
     html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'Share Tech Mono', monospace; overflow-x: hidden; }
-
-    /* ── scanline overlay ── */
     body::before {
       content: '';
       position: fixed; inset: 0; z-index: 999; pointer-events: none;
@@ -36,18 +32,14 @@
       animation: scanline 8s linear infinite;
       pointer-events: none; z-index: 998;
     }
-
     @keyframes scanline { to { top: 100%; } }
     @keyframes flicker  { 0%,100%{opacity:1}93%{opacity:0.96}94%{opacity:1} }
     @keyframes blink    { 0%,100%{opacity:1}50%{opacity:0.15} }
     @keyframes glow     { 0%,100%{text-shadow:0 0 10px var(--cyan)}50%{text-shadow:0 0 20px var(--cyan),0 0 40px var(--cyan)} }
     @keyframes fadeUp   { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
-    @keyframes pulse    { 0%,100%{box-shadow:0 0 0 0 rgba(0,245,212,.4)} 70%{box-shadow:0 0 0 8px rgba(0,245,212,0)} }
     @keyframes spin     { to{transform:rotate(360deg)} }
-
     body { animation: flicker 10s infinite; }
 
-    /* ── header ── */
     header {
       position: sticky; top: 0; z-index: 100;
       background: rgba(5,5,10,0.95);
@@ -57,75 +49,35 @@
       height: 52px;
       backdrop-filter: blur(10px);
     }
-    .logo {
-      font-family: 'Bebas Neue', monospace;
-      font-size: 22px; letter-spacing: 0.12em;
-      color: var(--cyan);
-      text-shadow: 0 0 14px var(--cyan);
-      animation: glow 4s ease-in-out infinite;
-    }
+    .logo { font-family: 'Bebas Neue', monospace; font-size: 22px; letter-spacing: 0.12em; color: var(--cyan); text-shadow: 0 0 14px var(--cyan); animation: glow 4s ease-in-out infinite; }
     .logo span { color: var(--pink); text-shadow: 0 0 14px var(--pink); }
     .header-right { display: flex; align-items: center; gap: 20px; }
-    .live-badge {
-      font-size: 9px; letter-spacing: 0.2em; color: var(--cyan);
-      display: flex; align-items: center; gap: 6px;
-    }
-    .live-dot {
-      width: 6px; height: 6px; border-radius: 50%; background: var(--cyan);
-      box-shadow: 0 0 8px var(--cyan);
-      animation: blink 1.5s step-end infinite;
-    }
+    .live-badge { font-size: 9px; letter-spacing: 0.2em; color: var(--cyan); display: flex; align-items: center; gap: 6px; }
+    .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 8px var(--cyan); animation: blink 1.5s step-end infinite; }
     .clock { font-size: 11px; color: var(--muted); letter-spacing: 0.1em; }
-    .refresh-bar {
-      position: fixed; top: 52px; left: 0; height: 2px; background: var(--cyan);
-      box-shadow: 0 0 8px var(--cyan);
-      transition: width 0s; z-index: 101;
-    }
+    .refresh-bar { position: fixed; top: 52px; left: 0; height: 2px; background: var(--cyan); box-shadow: 0 0 8px var(--cyan); z-index: 101; }
 
-    /* ── layout ── */
     main { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; }
 
-    /* ── top banner ── */
-    .banner {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 36px; flex-wrap: wrap; gap: 12px;
-    }
+    .banner { display: flex; align-items: center; justify-content: space-between; margin-bottom: 36px; flex-wrap: wrap; gap: 12px; }
     .banner-title { font-family: 'Bebas Neue', monospace; font-size: 48px; line-height: 1; }
     .banner-title .line1 { color: #fff; letter-spacing: 0.06em; }
     .banner-title .slash { color: var(--pink); text-shadow: 0 0 16px var(--pink); }
     .banner-title .line2 { color: var(--cyan); text-shadow: 0 0 16px var(--cyan); letter-spacing: 0.06em; }
     .banner-sub { font-size: 10px; letter-spacing: 0.25em; color: var(--muted); margin-top: 6px; }
     .stat-strip { display: flex; gap: 16px; flex-wrap: wrap; }
-    .stat-pill {
-      background: var(--dark); border: 1px solid var(--border);
-      border-radius: 3px; padding: 8px 14px; text-align: center;
-      min-width: 80px;
-    }
+    .stat-pill { background: var(--dark); border: 1px solid var(--border); border-radius: 3px; padding: 8px 14px; text-align: center; min-width: 80px; }
     .stat-pill .sp-val { font-size: 20px; font-family: 'Bebas Neue', monospace; letter-spacing: 0.08em; }
     .stat-pill .sp-label { font-size: 8px; letter-spacing: 0.18em; color: var(--muted); margin-top: 2px; }
 
-    /* ── section header ── */
-    .section-head {
-      display: flex; align-items: center; gap: 12px; margin-bottom: 14px; margin-top: 36px;
-    }
-    .section-head .sh-label {
-      font-size: 10px; letter-spacing: 0.22em; white-space: nowrap;
-    }
+    .section-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; margin-top: 36px; }
+    .section-head .sh-label { font-size: 10px; letter-spacing: 0.22em; white-space: nowrap; }
     .section-head .sh-line { flex: 1; height: 1px; }
 
-    /* ── card ── */
-    .card {
-      background: var(--panel);
-      border-radius: 0 6px 6px 0;
-      margin-bottom: 12px;
-      overflow: hidden;
-      animation: fadeUp 0.5s ease both;
-      transition: background 0.2s, box-shadow 0.2s;
-      position: relative;
-    }
+    .card { background: var(--panel); border-radius: 0 6px 6px 0; margin-bottom: 12px; overflow: hidden; animation: fadeUp 0.5s ease both; transition: background 0.2s; }
     .card:hover { background: #0b0b16; }
     .card-top-bar { height: 2px; }
-    .card-inner { padding: 14px 18px 16px; border-right: 1px solid rgba(255,255,255,0.04); border-bottom: 1px solid rgba(255,255,255,0.04); border-top: none; border-radius: 0 6px 6px 0; }
+    .card-inner { padding: 14px 18px 16px; border-right: 1px solid rgba(255,255,255,0.04); border-bottom: 1px solid rgba(255,255,255,0.04); border-radius: 0 6px 6px 0; }
     .card-tag { font-size: 9px; letter-spacing: 0.22em; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
     .card-tag .tag-line { flex: 1; height: 1px; }
     .card-title { font-size: 13.5px; color: #e0e2ee; line-height: 1.45; margin-bottom: 14px; letter-spacing: 0.02em; }
@@ -133,48 +85,26 @@
     .stat-box { background: var(--dark); border: 1px solid var(--border); border-radius: 3px; padding: 8px 10px; }
     .stat-box .sb-label { font-size: 8px; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 4px; }
     .stat-box .sb-val { font-size: 15px; letter-spacing: 0.05em; }
-    .card-tip { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 3px; padding: 8px 11px; font-size: 11px; color: #5a6075; line-height: 1.6; margin-bottom: 12px; letter-spacing: 0.02em; }
+    .card-tip { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 3px; padding: 8px 11px; font-size: 11px; color: #5a6075; line-height: 1.6; margin-bottom: 12px; }
     .card-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
     .pill-row { display: flex; gap: 5px; flex-wrap: wrap; }
     .pill { font-size: 8px; letter-spacing: 0.14em; border-radius: 2px; padding: 2px 8px; border: 1px solid; }
-    .trade-link { font-size: 10px; letter-spacing: 0.15em; text-decoration: none; padding: 4px 12px; border-radius: 3px; border: 1px solid; transition: all 0.15s; }
+    .trade-link { font-size: 10px; letter-spacing: 0.15em; text-decoration: none; padding: 4px 12px; border-radius: 3px; border: 1px solid; transition: opacity 0.15s; }
     .trade-link:hover { opacity: 0.8; }
 
-    /* ── empty state ── */
     .empty { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 11px; letter-spacing: 0.1em; border: 1px solid var(--border); border-radius: 6px; background: var(--dark); }
 
-    /* ── loading ── */
-    #loading {
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 20px; padding: 100px 0;
-    }
+    #loading { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; padding: 100px 0; }
     .spinner { width: 32px; height: 32px; border: 2px solid var(--border); border-top-color: var(--cyan); border-radius: 50%; animation: spin 0.8s linear infinite; }
     .loading-text { font-size: 10px; letter-spacing: 0.2em; color: var(--muted); animation: blink 1.5s step-end infinite; }
 
-    /* ── footer ── */
-    footer {
-      position: fixed; bottom: 0; left: 0; right: 0;
-      background: rgba(5,5,10,0.97);
-      border-top: 1px solid rgba(0,245,212,0.08);
-      padding: 0 32px;
-      height: 36px; display: flex; align-items: center; justify-content: space-between;
-      font-size: 9px; letter-spacing: 0.14em; color: var(--muted);
-      backdrop-filter: blur(10px);
-    }
-
-    /* ── corner tag ── */
-    .sector-tag {
-      position: fixed; top: 60px; right: 16px;
-      font-size: 9px; letter-spacing: 0.15em; color: var(--muted);
-      border: 1px solid var(--border); border-radius: 3px; padding: 3px 9px;
-      background: var(--dark);
-    }
+    footer { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(5,5,10,0.97); border-top: 1px solid rgba(0,245,212,0.08); padding: 0 32px; height: 36px; display: flex; align-items: center; justify-content: space-between; font-size: 9px; letter-spacing: 0.14em; color: var(--muted); backdrop-filter: blur(10px); }
+    .sector-tag { position: fixed; top: 60px; right: 16px; font-size: 9px; letter-spacing: 0.15em; color: var(--muted); border: 1px solid var(--border); border-radius: 3px; padding: 3px 9px; background: var(--dark); }
 
     @media (max-width: 600px) {
       .banner-title { font-size: 32px; }
       main { padding: 24px 16px 60px; }
       header { padding: 0 16px; }
-      .logo { font-size: 16px; }
       footer { padding: 0 16px; font-size: 8px; }
     }
   </style>
@@ -191,7 +121,7 @@
   </div>
 </header>
 
-<div class="sector-tag" id="sectorTag">SECTOR 01 · SPORTS</div>
+<div class="sector-tag" id="sectorTag">SECTOR 07 · SPORTS</div>
 
 <main>
   <div class="banner">
@@ -202,7 +132,7 @@
       </div>
       <div class="banner-sub">SPORTS PREDICTION MARKET SCANNER · THERONIN.XYZ</div>
     </div>
-    <div class="stat-strip" id="statStrip">
+    <div class="stat-strip">
       <div class="stat-pill"><div class="sp-val" style="color:var(--cyan)" id="statTotal">--</div><div class="sp-label">MARKETS</div></div>
       <div class="stat-pill"><div class="sp-val" style="color:var(--pink)" id="statArb">--</div><div class="sp-label">ARB</div></div>
       <div class="stat-pill"><div class="sp-val" style="color:var(--cyan)" id="statTail">--</div><div class="sp-label">TAIL-END</div></div>
@@ -216,28 +146,24 @@
   </div>
 
   <div id="content" style="display:none">
-    <!-- ARB -->
     <div class="section-head">
       <span class="sh-label" style="color:var(--cyan)">⚡ // ARBITRAGE</span>
       <div class="sh-line" style="background:linear-gradient(90deg,rgba(0,245,212,0.3),transparent)"></div>
     </div>
     <div id="arbCards"></div>
 
-    <!-- TAIL -->
     <div class="section-head">
       <span class="sh-label" style="color:var(--pink)">🎯 // TAIL-END</span>
       <div class="sh-line" style="background:linear-gradient(90deg,rgba(255,45,107,0.3),transparent)"></div>
     </div>
     <div id="tailCards"></div>
 
-    <!-- WIN -->
     <div class="section-head">
       <span class="sh-label" style="color:var(--cyan)">🏆 // BEST WIN ODDS</span>
       <div class="sh-line" style="background:linear-gradient(90deg,rgba(0,245,212,0.3),transparent)"></div>
     </div>
     <div id="winCards"></div>
 
-    <!-- NO EDGE -->
     <div class="section-head">
       <span class="sh-label" style="color:var(--pink)">📉 // NO EDGE</span>
       <div class="sh-line" style="background:linear-gradient(90deg,rgba(255,45,107,0.3),transparent)"></div>
@@ -253,72 +179,80 @@
 </footer>
 
 <script>
-// ── helpers ──────────────────────────────────────────────────
 const GAMMA = 'https://gamma-api.polymarket.com';
 const fmt$ = v => v>=1e6?`$${(v/1e6).toFixed(1)}M`:v>=1e3?`$${(v/1e3).toFixed(0)}K`:`$${Number(v).toFixed(0)}`;
 
-function getYesNo(m) {
-  const t = m.tokens || [];
-  const yes = t.find(x => x.outcome?.toLowerCase() === 'yes');
-  const no  = t.find(x => x.outcome?.toLowerCase() === 'no');
-  return { yp: yes?.price ?? null, np: no?.price ?? null };
+// Fixed price reader — handles outcomePrices array used by sports markets
+function getPrices(m) {
+  try {
+    if (m.outcomePrices) {
+      const prices = JSON.parse(m.outcomePrices);
+      if (prices.length >= 2) {
+        const p0 = parseFloat(prices[0]);
+        const p1 = parseFloat(prices[1]);
+        return { p0, p1, best: Math.max(p0,p1), worst: Math.min(p0,p1) };
+      }
+    }
+    const t = m.tokens||[];
+    if (t.length >= 2) {
+      const p0 = t[0]?.price ?? 0;
+      const p1 = t[1]?.price ?? 0;
+      return { p0, p1, best: Math.max(p0,p1), worst: Math.min(p0,p1) };
+    }
+  } catch(e) {}
+  return null;
 }
 
 function daysLeft(d) {
-  if (!d) return null;
-  return Math.max(0, Math.ceil((new Date(d) - Date.now()) / 86400000));
+  if(!d) return null;
+  return Math.max(0, Math.ceil((new Date(d)-Date.now())/86400000));
 }
 
 function polyLink(m) { return `https://polymarket.com/event/${m.slug||''}`; }
-function title(m) { return (m.question || m.title || 'Unknown').slice(0, 80); }
+function title(m) { return (m.question||m.title||'Unknown').slice(0,80); }
 
-// ── fetch ─────────────────────────────────────────────────────
 async function fetchSports() {
   const res = await fetch(`${GAMMA}/markets?active=true&closed=false&tag=sports&limit=100&order=volume24hr&ascending=false`);
-  if (!res.ok) throw new Error(`API ${res.status}`);
+  if(!res.ok) throw new Error(`API ${res.status}`);
   const data = await res.json();
-  return Array.isArray(data) ? data : data.markets || [];
+  return Array.isArray(data)?data:data.markets||[];
 }
 
-// ── strategies ────────────────────────────────────────────────
 function getArbs(markets) {
   return markets
-    .map(m => { const {yp,np}=getYesNo(m); if(!yp||!np) return null; const p=parseFloat(((1-yp-np)*100).toFixed(2)); return p>0?{m,profit:p,yp,np}:null; })
+    .map(m => { const p=getPrices(m); if(!p) return null; const profit=parseFloat(((1-p.p0-p.p1)*100).toFixed(2)); return profit>0?{m,profit,p0:p.p0,p1:p.p1}:null; })
     .filter(Boolean).sort((a,b)=>b.profit-a.profit).slice(0,3);
 }
 
 function getTails(markets) {
   return markets
-    .filter(m=>{ const {yp}=getYesNo(m); const d=daysLeft(m.endDate); return yp&&yp>=0.93&&d!==null&&d<=7; })
-    .sort((a,b)=>{ const {yp:ay}=getYesNo(a),{yp:by}=getYesNo(b); return by-ay; })
+    .filter(m=>{ const p=getPrices(m); const d=daysLeft(m.endDate); return p&&p.best>=0.70&&d!==null&&d<=30; })
+    .sort((a,b)=>{ const pa=getPrices(a),pb=getPrices(b); return pb.best-pa.best; })
     .slice(0,3);
 }
 
 function getWins(markets) {
   return markets
-    .filter(m=>{ const {yp}=getYesNo(m); const liq=parseFloat(m.liquidityNum||0); return yp&&yp>0.05&&yp<0.45&&liq>2000; })
-    .sort((a,b)=>{ const la=parseFloat(a.liquidityNum||0)*parseFloat(a.volume24hr||0); const lb=parseFloat(b.liquidityNum||0)*parseFloat(b.volume24hr||0); return lb-la; })
+    .filter(m=>{ const p=getPrices(m); const liq=parseFloat(m.liquidityNum||0); return p&&p.worst>0.05&&p.worst<0.70&&liq>500; })
+    .sort((a,b)=>{ const sa=parseFloat(a.liquidityNum||0)*parseFloat(a.volume24hr||0); const sb=parseFloat(b.liquidityNum||0)*parseFloat(b.volume24hr||0); return sb-sa; })
     .slice(0,3);
 }
 
 function getNoEdge(markets) {
   return markets
-    .filter(m=>{ const {yp}=getYesNo(m); const vol=parseFloat(m.volume24hr||0); return yp&&yp>0.62&&yp<0.90&&vol>5000; })
+    .filter(m=>{ const p=getPrices(m); const vol=parseFloat(m.volume24hr||0); return p&&p.best>0.50&&vol>1000; })
     .sort((a,b)=>parseFloat(b.volume24hr||0)-parseFloat(a.volume24hr||0))
     .slice(0,3);
 }
 
-// ── render card ───────────────────────────────────────────────
 function makeCard(opts, idx) {
   const { accent, tag, titleText, stats, tip, pills, vol, exp, href } = opts;
-  const isWarm = accent === 'var(--pink)' || accent === '#ff2d6b';
-  const expNum = parseInt(exp);
-
   const card = document.createElement('div');
   card.className = 'card';
   card.style.borderLeft = `3px solid ${accent}`;
-  card.style.boxShadow = `0 0 20px ${isWarm ? 'rgba(255,45,107,0.08)' : 'rgba(0,245,212,0.08)'}`;
-  card.style.animationDelay = `${idx * 0.1}s`;
+  card.style.boxShadow = `0 0 20px ${accent}10`;
+  card.style.animationDelay = `${idx*0.1}s`;
+  const expNum = parseInt(exp)||99;
 
   card.innerHTML = `
     <div class="card-top-bar" style="background:linear-gradient(90deg,${accent},transparent)"></div>
@@ -333,127 +267,109 @@ function makeCard(opts, idx) {
           <div class="stat-box">
             <div class="sb-label">${s.label}</div>
             <div class="sb-val" style="color:${s.color||accent};text-shadow:0 0 8px ${s.color||accent}88">${s.value}</div>
-          </div>
-        `).join('')}
+          </div>`).join('')}
       </div>
       <div class="card-tip">${tip}</div>
       <div class="card-footer">
         <div class="pill-row">
           ${pills.map(p=>`<span class="pill" style="color:${accent};border-color:${accent}44;background:${accent}0a">${p}</span>`).join('')}
-          <span class="pill" style="color:var(--muted);border-color:var(--border);background:var(--dim)">VOL ${vol}</span>
-          ${exp?`<span class="pill" style="color:${expNum<=3?'var(--pink)':'var(--muted)'};border-color:${expNum<=3?'rgba(255,45,107,0.3)':'var(--border)'};background:var(--dim)">EXP ${exp}</span>`:''}
+          <span class="pill" style="color:var(--muted);border-color:var(--border)">VOL ${vol}</span>
+          ${exp?`<span class="pill" style="color:${expNum<=3?'var(--pink)':'var(--muted)'};border-color:${expNum<=3?'rgba(255,45,107,0.3)':'var(--border)'}">EXP ${exp}</span>`:''}
         </div>
-        <a class="trade-link" href="${href}" target="_blank" rel="noopener"
-           style="color:${accent};border-color:${accent}40;background:${accent}0d">
-          TRADE ↗
-        </a>
+        <a class="trade-link" href="${href}" target="_blank" rel="noopener" style="color:${accent};border-color:${accent}40;background:${accent}0d">TRADE ↗</a>
       </div>
     </div>`;
   return card;
 }
 
-function renderEmpty(container) {
-  container.innerHTML = `<div class="empty">// NO SIGNALS DETECTED · RESCANNING IN 5 MIN</div>`;
+function renderEmpty(el) {
+  el.innerHTML = `<div class="empty">// NO SIGNALS DETECTED · RESCANNING IN 5 MIN</div>`;
 }
 
-// ── main render ───────────────────────────────────────────────
 function render(markets) {
   const arbs  = getArbs(markets);
   const tails = getTails(markets);
   const wins  = getWins(markets);
   const nos   = getNoEdge(markets);
 
-  // stats
   document.getElementById('statTotal').textContent = markets.length;
-  document.getElementById('statArb').textContent   = arbs.length  || '0';
-  document.getElementById('statTail').textContent  = tails.length || '0';
-  document.getElementById('statNo').textContent    = nos.length   || '0';
+  document.getElementById('statArb').textContent   = arbs.length||'0';
+  document.getElementById('statTail').textContent  = tails.length||'0';
+  document.getElementById('statNo').textContent    = nos.length||'0';
   document.getElementById('sectorTag').textContent = `SECTOR 07 · SPORTS · ${markets.length} MKTS`;
 
-  // ARB cards
-  const arbEl = document.getElementById('arbCards');
-  arbEl.innerHTML = '';
-  if (arbs.length === 0) { renderEmpty(arbEl); }
-  else arbs.forEach((a,i) => {
-    arbEl.appendChild(makeCard({
-      accent: 'var(--cyan)', tag: 'ARBITRAGE — RISK-FREE PROFIT',
-      titleText: title(a.m),
-      stats: [
-        { label: 'YES',    value: `${Math.round(a.yp*100)}¢`, color: 'var(--cyan)' },
-        { label: 'NO',     value: `${Math.round(a.np*100)}¢`, color: 'var(--pink)' },
-        { label: 'PROFIT', value: `+${a.profit}¢`,            color: 'var(--cyan)' },
-      ],
-      tip: 'Buy BOTH Yes and No — one always pays $1.00. Risk-free profit locked in regardless of outcome.',
-      pills: ['RISK-FREE', 'ACT FAST'],
-      vol: fmt$(parseFloat(a.m.volume24hr||0)),
-      exp: daysLeft(a.m.endDate)!==null?`${daysLeft(a.m.endDate)}d`:'',
-      href: polyLink(a.m),
-    }, i));
-  });
+  // ARB
+  const arbEl = document.getElementById('arbCards'); arbEl.innerHTML='';
+  if(!arbs.length) renderEmpty(arbEl);
+  else arbs.forEach((a,i) => arbEl.appendChild(makeCard({
+    accent:'var(--cyan)', tag:'ARBITRAGE — RISK-FREE PROFIT', titleText:title(a.m),
+    stats:[
+      {label:'OUTCOME 1', value:`${Math.round(a.p0*100)}¢`, color:'var(--cyan)'},
+      {label:'OUTCOME 2', value:`${Math.round(a.p1*100)}¢`, color:'var(--pink)'},
+      {label:'PROFIT',    value:`+${a.profit}¢`,            color:'var(--cyan)'},
+    ],
+    tip:'Buy BOTH outcomes — one always pays $1.00. Risk-free profit locked in regardless of result.',
+    pills:['RISK-FREE','ACT FAST'],
+    vol:fmt$(parseFloat(a.m.volume24hr||0)),
+    exp:daysLeft(a.m.endDate)!==null?`${daysLeft(a.m.endDate)}d`:'',
+    href:polyLink(a.m),
+  }, i)));
 
-  // TAIL cards
-  const tailEl = document.getElementById('tailCards');
-  tailEl.innerHTML = '';
-  if (tails.length === 0) { renderEmpty(tailEl); }
+  // TAIL
+  const tailEl = document.getElementById('tailCards'); tailEl.innerHTML='';
+  if(!tails.length) renderEmpty(tailEl);
   else tails.forEach((m,i) => {
-    const {yp} = getYesNo(m); const d = daysLeft(m.endDate);
+    const p=getPrices(m); const d=daysLeft(m.endDate);
     tailEl.appendChild(makeCard({
-      accent: 'var(--pink)', tag: 'TAIL-END — NEAR-CERTAIN',
-      titleText: title(m),
-      stats: [
-        { label: 'YES PRICE', value: `${Math.round(yp*100)}¢`,          color: 'var(--cyan)' },
-        { label: 'EXPIRES',   value: `${d}d`,                            color: 'var(--pink)' },
-        { label: 'UPSIDE',    value: `+${((1-yp)*100).toFixed(1)}¢`,    color: 'var(--cyan)' },
+      accent:'var(--pink)', tag:'TAIL-END — NEAR-CERTAIN', titleText:title(m),
+      stats:[
+        {label:'TOP PRICE', value:`${Math.round(p.best*100)}¢`,         color:'var(--cyan)'},
+        {label:'EXPIRES',   value:`${d}d`,                              color:'var(--pink)'},
+        {label:'UPSIDE',    value:`+${((1-p.best)*100).toFixed(1)}¢`,  color:'var(--cyan)'},
       ],
-      tip: 'Buy YES, exit at 95¢. Don\'t wait for $1.00 resolution — free capital for your next trade. Compound daily.',
-      pills: ['NEAR-CERTAIN', 'EXIT EARLY'],
-      vol: fmt$(parseFloat(m.volume24hr||0)),
-      exp: `${d}d`,
-      href: polyLink(m),
+      tip:"Buy the favourite — exit at 95¢. Don't wait for $1.00 resolution. Free capital for next trade.",
+      pills:['NEAR-CERTAIN','EXIT EARLY'],
+      vol:fmt$(parseFloat(m.volume24hr||0)), exp:`${d}d`, href:polyLink(m),
     }, i));
   });
 
-  // WIN cards
-  const winEl = document.getElementById('winCards');
-  winEl.innerHTML = '';
-  if (wins.length === 0) { renderEmpty(winEl); }
+  // WIN
+  const winEl = document.getElementById('winCards'); winEl.innerHTML='';
+  if(!wins.length) renderEmpty(winEl);
   else wins.forEach((m,i) => {
-    const {yp} = getYesNo(m);
+    const p=getPrices(m);
     winEl.appendChild(makeCard({
-      accent: 'var(--cyan)', tag: 'BEST WIN ODDS — TOP VALUE',
-      titleText: title(m),
-      stats: [
-        { label: 'YES PRICE', value: `${Math.round(yp*100)}¢`,         color: 'var(--cyan)' },
-        { label: 'LIQUIDITY', value: fmt$(parseFloat(m.liquidityNum||0)), color: 'var(--cyan)' },
-        { label: 'VOL/24H',   value: fmt$(parseFloat(m.volume24hr||0)),  color: 'var(--cyan)' },
+      accent:'var(--cyan)', tag:'BEST WIN ODDS — TOP VALUE', titleText:title(m),
+      stats:[
+        {label:'BEST ODDS',  value:`${Math.round(p.worst*100)}¢`,        color:'var(--cyan)'},
+        {label:'LIQUIDITY',  value:fmt$(parseFloat(m.liquidityNum||0)),   color:'var(--cyan)'},
+        {label:'VOL/24H',    value:fmt$(parseFloat(m.volume24hr||0)),     color:'var(--cyan)'},
       ],
-      tip: 'Best value YES odds in sports right now. Deep liquidity means clean entry and exit. Use a limit order at or below current price.',
-      pills: ['HIGH VALUE', 'DEEP LIQ'],
-      vol: fmt$(parseFloat(m.volume24hr||0)),
-      exp: daysLeft(m.endDate)!==null?`${daysLeft(m.endDate)}d`:'',
-      href: polyLink(m),
+      tip:'Best value odds in sports right now. Deep liquidity — clean entry and exit. Use a limit order.',
+      pills:['HIGH VALUE','DEEP LIQ'],
+      vol:fmt$(parseFloat(m.volume24hr||0)),
+      exp:daysLeft(m.endDate)!==null?`${daysLeft(m.endDate)}d`:'',
+      href:polyLink(m),
     }, i));
   });
 
-  // NO EDGE cards
-  const noEl = document.getElementById('noCards');
-  noEl.innerHTML = '';
-  if (nos.length === 0) { renderEmpty(noEl); }
+  // NO EDGE
+  const noEl = document.getElementById('noCards'); noEl.innerHTML='';
+  if(!nos.length) renderEmpty(noEl);
   else nos.forEach((m,i) => {
-    const {yp,np} = getYesNo(m);
+    const p=getPrices(m);
     noEl.appendChild(makeCard({
-      accent: 'var(--pink)', tag: 'NO EDGE — OVERPRICED YES',
-      titleText: title(m),
-      stats: [
-        { label: 'YES (HYPED)', value: `${Math.round(yp*100)}¢`,       color: 'var(--pink)' },
-        { label: 'NO',          value: `${Math.round((np||0)*100)}¢`,   color: 'var(--cyan)' },
-        { label: 'VOL/24H',     value: fmt$(parseFloat(m.volume24hr||0)), color: 'var(--pink)' },
+      accent:'var(--pink)', tag:'NO EDGE — OVERPRICED FAVOURITE', titleText:title(m),
+      stats:[
+        {label:'FAV (HYPED)', value:`${Math.round(p.best*100)}¢`,       color:'var(--pink)'},
+        {label:'UNDERDOG',    value:`${Math.round(p.worst*100)}¢`,      color:'var(--cyan)'},
+        {label:'VOL/24H',     value:fmt$(parseFloat(m.volume24hr||0)),  color:'var(--pink)'},
       ],
-      tip: 'Hyped market — YES statistically overpriced. Fade the crowd. Limit order on NO just above best bid. Cross-check sportsbook odds.',
-      pills: ['FADE THE HYPE', 'LIMIT ORDER'],
-      vol: fmt$(parseFloat(m.volume24hr||0)),
-      exp: daysLeft(m.endDate)!==null?`${daysLeft(m.endDate)}d`:'',
-      href: polyLink(m),
+      tip:'High-volume hyped market. Favourite may be overpriced. Consider the underdog — limit order just above best bid.',
+      pills:['FADE THE HYPE','LIMIT ORDER'],
+      vol:fmt$(parseFloat(m.volume24hr||0)),
+      exp:daysLeft(m.endDate)!==null?`${daysLeft(m.endDate)}d`:'',
+      href:polyLink(m),
     }, i));
   });
 
@@ -461,23 +377,9 @@ function render(markets) {
     `LAST SCAN: ${new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'})}`;
 }
 
-// ── refresh bar animation ─────────────────────────────────────
-const REFRESH_MS = 5 * 60 * 1000;
+const REFRESH_MS = 5*60*1000;
 let refreshStart = Date.now();
 
-function tickRefreshBar() {
-  const elapsed = Date.now() - refreshStart;
-  const pct = Math.min(100, (elapsed / REFRESH_MS) * 100);
-  document.getElementById('refreshBar').style.width = pct + '%';
-}
-
-// ── clock ─────────────────────────────────────────────────────
-function tickClock() {
-  document.getElementById('clock').textContent =
-    new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-}
-
-// ── main loop ─────────────────────────────────────────────────
 async function scan() {
   try {
     const markets = await fetchSports();
@@ -487,11 +389,21 @@ async function scan() {
     refreshStart = Date.now();
   } catch(e) {
     document.getElementById('loading').innerHTML =
-      `<div style="color:var(--pink);font-size:11px;letter-spacing:0.15em">// ERROR: ${e.message}<br>RETRYING IN 60s...</div>`;
+      `<div style="color:var(--pink);font-size:11px;letter-spacing:0.15em;text-align:center">// ERROR: ${e.message}<br><br>RETRYING IN 60s...</div>`;
+    setTimeout(scan, 60000);
   }
 }
 
-// kick off
+function tickClock() {
+  document.getElementById('clock').textContent =
+    new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+}
+
+function tickRefreshBar() {
+  const pct = Math.min(100,(Date.now()-refreshStart)/REFRESH_MS*100);
+  document.getElementById('refreshBar').style.width = pct+'%';
+}
+
 scan();
 setInterval(scan, REFRESH_MS);
 setInterval(tickClock, 1000);
