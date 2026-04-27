@@ -1,4 +1,4 @@
-// PolyScout Sports Bot — DEBUG MODE
+// PolyScout Sports Bot — Fixed token reader for sports markets
 
 import { Client, GatewayIntentBits, REST, Routes, SlashCommandBuilder } from "discord.js";
 import fetch from "node-fetch";
@@ -9,11 +9,29 @@ const SITE       = "https://theronin.xyz/signals";
 const CHANNEL_ID = "1498195141997891615";
 const SCAN_EVERY = 30 * 1000;
 
-function getYesNo(m) {
-  const t = m.tokens||[];
-  const yes = t.find(x=>x.outcome?.toLowerCase()==="yes");
-  const no  = t.find(x=>x.outcome?.toLowerCase()==="no");
-  return { yp: yes?.price??null, np: no?.price??null };
+// Sports markets use outcomePrices + outcomes arrays instead of tokens
+function getPrices(m) {
+  try {
+    // Try outcomePrices field (array of price strings)
+    if (m.outcomePrices) {
+      const prices = JSON.parse(m.outcomePrices);
+      const outcomes = JSON.parse(m.outcomes || "[]");
+      if (prices.length >= 2) {
+        const p0 = parseFloat(prices[0]);
+        const p1 = parseFloat(prices[1]);
+        // find which is YES/higher and which is lower
+        return { p0, p1, outcomes, best: Math.max(p0,p1), worst: Math.min(p0,p1) };
+      }
+    }
+    // Fallback: tokens array
+    const t = m.tokens||[];
+    if (t.length >= 2) {
+      const p0 = t[0]?.price ?? 0;
+      const p1 = t[1]?.price ?? 0;
+      return { p0, p1, outcomes: [t[0]?.outcome||"", t[1]?.outcome||""], best: Math.max(p0,p1), worst: Math.min(p0,p1) };
+    }
+  } catch(e) {}
+  return null;
 }
 
 function daysLeft(d) {
@@ -36,9 +54,10 @@ async function getSports() {
 function findArb(markets) {
   let best=null, bp=-99;
   for(const m of markets) {
-    const {yp,np}=getYesNo(m); if(!yp||!np) continue;
-    const p=parseFloat(((1-yp-np)*100).toFixed(2));
-    if(p>bp){bp=p;best={m,profit:p,yp,np};}
+    const p = getPrices(m); if(!p) continue;
+    const sum = p.p0 + p.p1;
+    const profit = parseFloat(((1-sum)*100).toFixed(2));
+    if(profit>bp){bp=profit;best={m,profit,sum,p0:p.p0,p1:p.p1};}
   }
   return best;
 }
@@ -46,8 +65,9 @@ function findArb(markets) {
 function findTail(markets) {
   let best=null, by=0;
   for(const m of markets) {
-    const {yp}=getYesNo(m); const d=daysLeft(m.endDate);
-    if(yp&&yp>=0.70&&d!==null&&d<=30&&yp>by){by=yp;best={m,yp,d};}
+    const p = getPrices(m); if(!p) continue;
+    const d = daysLeft(m.endDate);
+    if(p.best>=0.70&&d!==null&&d<=30&&p.best>by){by=p.best;best={m,yp:p.best,d};}
   }
   return best;
 }
@@ -55,8 +75,10 @@ function findTail(markets) {
 function findWin(markets) {
   let best=null, bs=0;
   for(const m of markets) {
-    const {yp}=getYesNo(m); const liq=parseFloat(m.liquidityNum||0); const vol=parseFloat(m.volume24hr||0);
-    if(yp&&yp>0.05&&yp<0.70&&liq>500){const s=liq*vol;if(s>bs){bs=s;best={m,yp,liq,vol};}}
+    const p = getPrices(m); if(!p) continue;
+    const liq=parseFloat(m.liquidityNum||0); const vol=parseFloat(m.volume24hr||0);
+    // best value = lowest priced outcome with good liquidity
+    if(p.worst>0.05&&p.worst<0.70&&liq>500){const s=liq*vol;if(s>bs){bs=s;best={m,yp:p.worst,liq,vol};}}
   }
   return best;
 }
@@ -64,8 +86,9 @@ function findWin(markets) {
 function findNo(markets) {
   let best=null, bv=0;
   for(const m of markets) {
-    const {yp,np}=getYesNo(m); const vol=parseFloat(m.volume24hr||0);
-    if(yp&&yp>0.50&&vol>1000&&vol>bv){bv=vol;best={m,yp,np,vol};}
+    const p = getPrices(m); if(!p) continue;
+    const vol=parseFloat(m.volume24hr||0);
+    if(p.best>0.50&&vol>1000&&vol>bv){bv=vol;best={m,yp:p.best,np:p.worst,vol};}
   }
   return best;
 }
@@ -101,14 +124,13 @@ async function runScan() {
   try {
     const markets = await getSports();
 
-    // debug: show first 3 markets raw data
-    console.log("--- DEBUG SAMPLE ---");
+    // debug first 3
+    console.log("--- DEBUG ---");
     markets.slice(0,3).forEach((m,i) => {
-      const {yp,np} = getYesNo(m);
+      const p = getPrices(m);
       const d = daysLeft(m.endDate);
       const vol = parseFloat(m.volume24hr||0);
-      const liq = parseFloat(m.liquidityNum||0);
-      console.log(`${i+1}. "${title(m)}" | YES:${yp} NO:${np} | vol:${vol} liq:${liq} days:${d}`);
+      console.log(`${i+1}. "${title(m)}" | p0:${p?.p0} p1:${p?.p1} best:${p?.best} | vol:${vol} days:${d}`);
     });
 
     const a=findArb(markets), t=findTail(markets), w=findWin(markets), n=findNo(markets);
